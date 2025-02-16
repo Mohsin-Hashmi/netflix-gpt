@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 const Login = () => {
+  const [isSignInForm, setIsSignInForm] = useState(true);
+  const toggleSignupForm = () => {
+    setIsSignInForm(!isSignInForm);
+  };
   return (
     <>
       <Header />
@@ -14,21 +18,63 @@ const Login = () => {
       <div className="relative h-screen">
         <form
           action=""
-          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-black/70 w-[450px] py-[48px] px-[68px]"
+          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-black/80 w-[450px] py-[48px] px-[68px] "
         >
-          <h1 className="text-white text-3xl font-bold mb-[28px] ">Sign In</h1>
-          <input type="email" placeholder="Email Address" className=" w-full p-4 mb-6 bg-black/70 text-white" />
-          <input type="password" placeholder="Password" className="w-full p-4 mb-6 bg-black/70 text-white" />
-          <button className=" bg-[#E50914] w-full text-white p-4 rounded-md  text-xl ">Sign In</button>
+          <h1 className="text-white text-3xl font-bold mb-[28px] ">
+            {isSignInForm ? "Sign In" : "Sign Up"}
+          </h1>
+          {!isSignInForm && (
+            <input
+              type="text"
+              placeholder="Full Name"
+              className=" w-full p-4 mb-6 bg-gray-600 text-white rounded-sm"
+            />
+          )}
+
+          <input
+            type="email"
+            placeholder="Email Address"
+            className=" w-full p-4 mb-6 bg-gray-600 text-white rounded-sm"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-4 mb-6 bg-gray-600 text-white rounded-sm"
+          />
+          <button className=" bg-[#E50914] w-full text-white p-4 rounded-md  text-xl ">
+            {isSignInForm ? "Sign In" : "Sign Up"}
+          </button>
           <p className="text-center text-white my-[16px]"> OR</p>
           <div className="flex justify-between hover:underline">
             <div className="flex gap-x-[10px] items-center">
-                <input type="checkbox" className="text-white" />
-                <p className="text-white">Remember Me</p>
+              <input type="checkbox" className="text-white bg-white" />
+              <p className="text-white">Remember Me</p>
             </div>
             <Link className="text-white">Forgot password?</Link>
           </div>
-          <p className="text-[#ffffffb3] mt-[16px] text-base">New to Netflix? <Link to='' className="text-white hover:underline">Sign up now.</Link></p>
+          {isSignInForm ? (
+            <p className="text-[#ffffffb3] mt-[16px] text-base">
+              New to Netflix?{" "}
+              <Link
+                onClick={toggleSignupForm}
+                to="#"
+                className="text-white hover:underline"
+              >
+                Sign up now.
+              </Link>
+            </p>
+          ) : (
+            <p className="text-[#ffffffb3] mt-[16px] text-base">
+              Already have an account?{" "}
+              <Link
+                onClick={toggleSignupForm}
+                to="#"
+                className="text-white hover:underline"
+              >
+                Sign in now.
+              </Link>
+            </p>
+          )}
         </form>
       </div>
     </>
