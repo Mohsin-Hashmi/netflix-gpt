@@ -2,17 +2,44 @@ import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import { checkValidData } from "../utils/validate";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../utils/firebase";
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
+
   const toggleSignupForm = () => {
     setIsSignInForm(!isSignInForm);
   };
   const handleButtonClick = () => {
     /**Validate the form data */
-    checkValidData(email, password);
-    
+    const message = checkValidData(
+      email.current.value,
+      password.current.value,
+      name.current.value
+    );
+    setErrorMessage(message);
+    if (message) return;
+    if (!isSignInForm) {
+      /**Sign up logic */
+      createUserWithEmailAndPassword(auth, email?.current?.value, password?.current?.value)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log(user);
+          
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    } else {
+      /**Sign in logic */
+    }
   };
   return (
     <>
@@ -25,7 +52,7 @@ const Login = () => {
       </div>
       <div className="relative h-screen">
         <form
-          onSubmit={(e)=>e.preventDefault()}
+          onSubmit={(e) => e.preventDefault()}
           className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-black/80 w-[450px] py-[48px] px-[68px] "
         >
           <h1 className="text-white text-3xl font-bold mb-[28px] ">
@@ -33,6 +60,7 @@ const Login = () => {
           </h1>
           {!isSignInForm && (
             <input
+              ref={name}
               type="text"
               placeholder="Full Name"
               className=" w-full p-4 mb-6 bg-gray-600 text-white rounded-sm"
@@ -51,6 +79,7 @@ const Login = () => {
             placeholder="Password"
             className="w-full p-4 mb-6 bg-gray-600 text-white rounded-sm"
           />
+          <p className="text-red-500 font-bold text-lg p-2">{errorMessage}</p>
           <button
             onClick={handleButtonClick}
             className=" bg-[#E50914] w-full text-white p-4 rounded-md  text-xl "
