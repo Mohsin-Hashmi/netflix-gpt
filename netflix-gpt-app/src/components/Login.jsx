@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { Link } from "react-router-dom";
+import { checkValidData } from "../utils/validate";
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const email = useRef(null);
+  const password = useRef(null);
   const toggleSignupForm = () => {
     setIsSignInForm(!isSignInForm);
+  };
+  const handleButtonClick = () => {
+    /**Validate the form data */
+    checkValidData(email, password);
+    
   };
   return (
     <>
@@ -17,7 +25,7 @@ const Login = () => {
       </div>
       <div className="relative h-screen">
         <form
-          action=""
+          onSubmit={(e)=>e.preventDefault()}
           className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-black/80 w-[450px] py-[48px] px-[68px] "
         >
           <h1 className="text-white text-3xl font-bold mb-[28px] ">
@@ -32,16 +40,21 @@ const Login = () => {
           )}
 
           <input
+            ref={email}
             type="email"
             placeholder="Email Address"
             className=" w-full p-4 mb-6 bg-gray-600 text-white rounded-sm"
           />
           <input
+            ref={password}
             type="password"
             placeholder="Password"
             className="w-full p-4 mb-6 bg-gray-600 text-white rounded-sm"
           />
-          <button className=" bg-[#E50914] w-full text-white p-4 rounded-md  text-xl ">
+          <button
+            onClick={handleButtonClick}
+            className=" bg-[#E50914] w-full text-white p-4 rounded-md  text-xl "
+          >
             {isSignInForm ? "Sign In" : "Sign Up"}
           </button>
           <p className="text-center text-white my-[16px]"> OR</p>
@@ -57,7 +70,7 @@ const Login = () => {
               New to Netflix?{" "}
               <Link
                 onClick={toggleSignupForm}
-                to="#"
+                to="/"
                 className="text-white hover:underline"
               >
                 Sign up now.
@@ -68,7 +81,7 @@ const Login = () => {
               Already have an account?{" "}
               <Link
                 onClick={toggleSignupForm}
-                to="#"
+                to="/"
                 className="text-white hover:underline"
               >
                 Sign in now.
