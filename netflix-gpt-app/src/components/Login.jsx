@@ -11,6 +11,7 @@ import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { NETFLIX_BG_IMAGE } from "../utils/constants";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -49,8 +50,7 @@ const Login = () => {
               dispatch(
                 addUser({ uid: uid, email: email, displayName: displayName })
               );
-              console.log("User profile updated:", auth.currentUser);
-              navigate("/browse");
+              
             })
             .catch((error) => {
               setErrorMessage(error.message);
@@ -71,8 +71,6 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -86,7 +84,7 @@ const Login = () => {
       <Header />
       <div className="absolute">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/f268d374-734d-474f-ad13-af5ba87ef9fc/web/PK-en-20250210-TRIFECTA-perspective_2ad65b09-fa88-4c24-969d-b8df29753007_small.jpg"
+          src={NETFLIX_BG_IMAGE}
           alt="bg netflix"
         />
       </div>
