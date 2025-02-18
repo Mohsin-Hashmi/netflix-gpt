@@ -9,8 +9,11 @@ import {
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -38,11 +41,15 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-          updateProfile(user, {
+          return updateProfile(user, {
             displayName: name?.current?.value,
           })
             .then(() => {
-              console.log(user);
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(
+                addUser({ uid: uid, email: email, displayName: displayName })
+              );
+              console.log("User profile updated:", auth.currentUser);
               navigate("/browse");
             })
             .catch((error) => {
