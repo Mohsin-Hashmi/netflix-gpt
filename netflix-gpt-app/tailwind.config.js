@@ -7,4 +7,7 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  corePlugins: {
+    scrollbar: false, // Optional if you want to disable all scrollbars globally
+  }
 }
