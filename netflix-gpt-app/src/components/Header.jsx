@@ -10,6 +10,7 @@ import { addUser } from "../utils/userSlice";
 import { removeUser } from "../utils/userSlice";
 import { NETFLIX_LOGO } from "../utils/constants";
 import { USER_AVTAR } from "../utils/constants";
+import { toggleGptSearchView } from "../utils/gptSlice";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,20 +38,21 @@ const Header = () => {
     /**Unsubscribe when component unmount */
     return () => unsubscribe();
   }, []);
+
+  const handleGptSearchClick= ()=>{
+    /**Toogle search page*/
+    dispatch(toggleGptSearchView());
+  }
   return (
     <>
       <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-50 w-full flex justify-between">
-        <img
-          className="w-44"
-          src={NETFLIX_LOGO}
-          alt="netflix logo"
-        />
+        <img className="w-44" src={NETFLIX_LOGO} alt="netflix logo" />
         {user && (
           <div className="flex items-center gap-x-10">
-            <img
-              src={USER_AVTAR}
-              alt="user avtar"
-            />
+            <img src={USER_AVTAR} alt="user avtar" />
+            <button onClick={handleGptSearchClick} className="bg-purple-800 p-3 text-white text-[17px] rounded-lg">
+              GPT Search
+            </button>
             <button
               onClick={handleSignOut}
               className="bg-[#E50914] p-3 text-white text-[17px] rounded-lg"
