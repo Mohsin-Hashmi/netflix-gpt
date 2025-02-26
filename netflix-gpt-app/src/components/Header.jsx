@@ -14,7 +14,8 @@ import { toggleGptSearchView } from "../utils/gptSlice";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((store) => store.user);
+  const user = useSelector((store) => store?.user);
+  const showGptSearch = useSelector((store) => store?.gpt?.showGptSearch);
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -39,10 +40,10 @@ const Header = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleGptSearchClick= ()=>{
+  const handleGptSearchClick = () => {
     /**Toogle search page*/
     dispatch(toggleGptSearchView());
-  }
+  };
   return (
     <>
       <div className="absolute px-8 py-2 bg-gradient-to-b from-black z-50 w-full flex justify-between">
@@ -50,8 +51,11 @@ const Header = () => {
         {user && (
           <div className="flex items-center gap-x-10">
             <img src={USER_AVTAR} alt="user avtar" />
-            <button onClick={handleGptSearchClick} className="bg-purple-800 p-3 text-white text-[17px] rounded-lg">
-              GPT Search
+            <button
+              onClick={handleGptSearchClick}
+              className="bg-purple-800 p-3 text-white text-[17px] rounded-lg"
+            >
+              {showGptSearch ? "Home Page" : " GPT Search"}
             </button>
             <button
               onClick={handleSignOut}

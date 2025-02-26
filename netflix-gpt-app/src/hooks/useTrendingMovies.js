@@ -9,7 +9,6 @@ const useTrendingMovies = () => {
         try {
             const data = await fetch("https://api.themoviedb.org/3/movie/top_rated?page=1", API_OPTIONS)
             const json = await data.json();
-            console.log("comming movies data", json.results);
             dispatch(addTrendingMovies(json.results));
         } catch (err) {
             console.error("Fetch error:", err);
